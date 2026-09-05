@@ -1,24 +1,16 @@
-FROM public.ecr.aws/docker/library/python:3.10-alpine
-ENV FLASK_RUN_HOST=0.0.0.0
+FROM public.ecr.aws/docker/library/python:3.10-alpine3.17
 
-WORKDIR /
-RUN adduser -u 1000 -D app
-RUN apk update && \
-  apk add \
-  pcre \
-  pcre-dev \
-  build-base \
-  gcc \
-  linux-headers \
-  openssl \
-  libffi-dev \
-  && pip install pipenv
+WORKDIR /app
 
-RUN mkdir -p /var/www/app && mkdir /app
+RUN apk add --no-cache build-base linux-headers libffi-dev
 
-COPY Pipfile* /app
-RUN cd /app && pipenv install --system --deploy
+COPY Pipfile* /app/
 
-COPY . /app
+RUN pip install --upgrade pip pipenv && \
+    pipenv install --system --deploy
 
-CMD uwsgi --http :5000 --master --enable-threads -s /var/www/app/app.sock --manage-script-name --mount /=app:app
+COPY . /app/
+
+EXPOSE 5000
+
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
