@@ -13,4 +13,4 @@ COPY . /app/
 
 EXPOSE 5000
 
-CMD ["uwsgi", "--ini", "uwsgi.ini"]
+CMD ["python3", "-m", "flask", "--app", ".", "run", "--host=0.0.0.0", "--port=5000"]
