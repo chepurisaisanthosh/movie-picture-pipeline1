@@ -1,10 +1,10 @@
 ﻿name: Backend Continuous Deployment
+
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -60,4 +60,5 @@ jobs:
           kustomize build | kubectl apply -f -
           kubectl rollout status deployment/backend -n default --timeout=120s
           kubectl get pods -l app=backend
+
 
