@@ -1,6 +1,4 @@
-﻿name: Backend Continuous Deployment
-
-on:
+﻿on:
   workflow_dispatch:
   push:
     branches:
