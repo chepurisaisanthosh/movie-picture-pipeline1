@@ -1,19 +1,9 @@
 ﻿name: Backend Continuous Deployment
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-    paths:
-      - "starter/backend/**"
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-env:
-  AWS_REGION: us-east-1
-  EKS_CLUSTER_NAME: cluster
-  ECR_REPOSITORY: backend
 
 jobs:
   lint:
@@ -70,3 +60,4 @@ jobs:
           kustomize build | kubectl apply -f -
           kubectl rollout status deployment/backend -n default --timeout=120s
           kubectl get pods -l app=backend
+

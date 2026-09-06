@@ -1,20 +1,9 @@
 ﻿name: Frontend Continuous Deployment
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-    paths:
-      - "starter/frontend/**"
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-env:
-  AWS_REGION: us-east-1
-  EKS_CLUSTER_NAME: cluster
-  ECR_REPOSITORY: frontend
-  REACT_APP_MOVIE_API_URL: http://a741b866eb6b1490c9a52086548e1487-1416148169.us-east-1.elb.amazonaws.com
 
 jobs:
   lint:
@@ -75,3 +64,4 @@ jobs:
           kustomize build | kubectl apply -f -
           kubectl rollout status deployment/frontend -n default --timeout=120s
           kubectl get pods -l app=frontend
+
